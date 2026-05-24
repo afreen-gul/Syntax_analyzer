@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>W++ Compiler · CS-310</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="index-page">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">W<em>++</em> <span style="font-size:16px;font-weight:400;-webkit-text-fill-color:var(--txt3);background:none;">Compiler</span></div>
+      <div class="topbar-divider"></div>
+      <span class="topbar-label">CS-310 · Spring 2026</span>
+    </div>
+    <div class="topbar-right">
+      <div class="theme-wrap">
+        <span class="theme-label" id="themeLabel">DARK</span>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="index-main">
+
+    <p class="eyebrow">Compiler Construction Project · CS-310</p>
+
+    <h1 class="hero-title">W<span class="hl">++</span> Compiler</h1>
+
+    <p class="hero-sub">
+      A complete W++ Language Compiler — Lexical Analyzer &amp; Syntax Parser<br>
+      UET Taxila
+    </p>
+
+    <div class="group-card">
+      <div class="card-header">
+        <span class="card-title">GROUP MEMBERS</span>
+        <div class="card-dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+      </div>
+      <div class="members-grid">
+        <div class="member-cell">
+          <div class="member-idx">member · 01</div>
+          <div class="member-name">Afreen Gul</div>
+          <div class="member-roll">23-CS-84</div>
+        </div>
+        <div class="member-cell">
+          <div class="member-idx">member · 02</div>
+          <div class="member-name">Shameen Shams</div>
+          <div class="member-roll">23-CS-07</div>
+        </div>
+        <div class="member-cell">
+          <div class="member-idx">member · 03</div>
+          <div class="member-name">Areeba Ali</div>
+          <div class="member-roll">23-CS-114</div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="meta-label">Department</div>
+          <div class="meta-value">Computer Science &amp; Engineering</div>
+        </div>
+        <div>
+          <div class="meta-label">Project</div>
+          <div class="meta-value">Compiler Design — W++ Language</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-btns">
+      <a href="/scanner" class="module-btn">
+        <div class="btn-top">
+          <span class="btn-dot"></span>
+          <span class="btn-title">Scanner</span>
+          <span class="btn-arrow">→</span>
+        </div>
+        <span class="btn-desc">LEXICAL ANALYZER · TOKENIZER</span>
+      </a>
+      <a href="/parser" class="module-btn">
+        <div class="btn-top">
+          <span class="btn-dot"></span>
+          <span class="btn-title">Parser</span>
+          <span class="btn-arrow">→</span>
+        </div>
+        <span class="btn-desc">SYNTAX ANALYZER · SYMBOL TABLE</span>
+      </a>
+    </div>
+
+    <div class="features-row">
+      <span class="feat-tag">Token Detection</span>
+      <span class="feat-tag">Syntax Validation</span>
+      <span class="feat-tag">Error Reporting</span>
+      <span class="feat-tag">Symbol Table</span>
+      <span class="feat-tag">Keyword Detection</span>
+      <span class="feat-tag">Multi-Error Display</span>
+      <span class="feat-tag">Variable Naming Rules</span>
+      <span class="feat-tag">Arithmetic Expressions</span>
+      <span class="feat-tag">PDF Report Export</span>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-live">
+      <span class="live-dot"></span>
+      Client-side · No data sent
+    </div>
+    <span>UET Taxila · CS-310 Spring 2026</span>
+  </footer>
+
+</div>
+<script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>

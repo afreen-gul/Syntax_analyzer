@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>W++ Parser</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="/" class="back-link">← Home</a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-logo">W<em>++</em></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-page">Parser — Syntax Analyzer</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-pill" id="statusPill">
+      {% if result %}✓ OK{% elif errors %}✗ {{ errors|length }} Error{{ 's' if errors|length != 1 }}{% else %}Idle{% endif %}
+    </div>
+    <div class="theme-wrap">
+      <span class="theme-label" id="themeLabel">DARK</span>
+      <button type="button" class="theme-toggle" id="themeToggle"></button>
+    </div>
+  </div>
+</header>
+
+<form method="POST" id="parserForm">
+<div class="ide-layout">
+
+  <div class="ide-pane">
+    <div class="pane-header">
+      <span class="pane-label">// <span class="ac2">input</span> — source.wpp</span>
+    </div>
+    <div class="editor-wrap">
+      <div class="line-nums" id="lineNums"><span>1</span></div>
+      <textarea class="code-textarea" name="code" id="codeEditor"
+        spellcheck="false" autocomplete="off" autocorrect="off"
+        placeholder="// Write W++ code here&#10;&#10;int main(){&#10;&#10;    int x = 10;&#10;    float y = 3.14;&#10;&#10;    if(x &gt; 0){&#10;        x = x + 1;&#10;    }&#10;&#10;    return 0;&#10;}">{{ code }}</textarea>
+    </div>
+    <div class="statusbar">
+      <div class="status-info" id="editorInfo">Ln 1, Col 0 · 0 chars</div>
+      <button type="submit" class="run-btn">▶ Run Parser</button>
+    </div>
+  </div>
+
+  <div class="ide-pane">
+    <div class="tabs">
+      <button type="button" class="tab-btn active-blue" id="tab-diagnosis-btn" onclick="switchTab('diagnosis')">
+        Diagnosis{% if errors %} ({{ errors|length }}){% endif %}
+      </button>
+      <button type="button" class="tab-btn" id="tab-symbols-btn" onclick="switchTab('symbols')">
+        Symbol Table{% if symbols %} ({{ symbols|length }}){% endif %}
+      </button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;flex:1;overflow:hidden" id="panel-diagnosis">
+      <div class="again-bar">
+        <div class="again-actions">
+          <button type="submit" formaction="/download_parser_report" class="btn-again" form="parserForm">⬇ Download Report</button>
+          <a href="/scanner" class="btn-again">→ Try Scanner</a>
+        </div>
+      </div>
+      <div class="output-pane-body">
+        {% if result %}
+          <div class="result-banner success">✓ &nbsp;Parsing Successful — No Syntax Errors</div>
+        {% endif %}
+        {% if errors %}
+          <div class="result-banner fail">✗ &nbsp;Found {{ errors|length }} syntax error{{ 's' if errors|length != 1 }}</div>
+          <div class="error-list">
+            {% for e in errors %}
+            <div class="error-item"><span class="error-icon">✗</span><span>{{ e }}</span></div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if not result and not errors %}
+          <div class="empty-state">
+            <div class="empty-icon">◉</div>
+            <h2>No Results Yet</h2>
+            <small>Write code and click "Run Parser"</small>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div style="display:none;flex-direction:column;flex:1;overflow:hidden" id="panel-symbols">
+      <div class="output-pane-body">
+        {% if symbols %}
+        <table class="sym-table">
+          <thead><tr><th>#</th><th>Variable</th><th>Type</th></tr></thead>
+          <tbody>
+            {% for name, type in symbols.items() %}
+            <tr><td class="row-num">{{ loop.index }}</td><td class="sym-var">{{ name }}</td><td class="sym-type">{{ type }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">◉</div>
+          <h2>Symbol Table Empty</h2>
+          <small>Parse code with variable declarations</small>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">Errors: <strong style="color:{% if errors %}var(--red){% elif result %}var(--green){% else %}var(--txt3){% endif %}">{{ errors|length if errors else 0 }}</strong></div>
+      <div class="stat-item">Symbols: <strong>{{ symbols|length if symbols else 0 }}</strong></div>
+      <div class="stat-item">Status: <strong style="color:{% if result %}var(--green){% elif errors %}var(--red){% else %}var(--txt3){% endif %}">{% if result %}OK{% elif errors %}FAIL{% else %}IDLE{% endif %}</strong></div>
+    </div>
+  </div>
+
+</div>
+</form>
+
+<script src="{{ url_for('static', filename='parser.js') }}"></script>
+<script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>

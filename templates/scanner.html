@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>W++ Scanner</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="/" class="back-link">← Home</a>
+    <div class="topbar-divider"></div>
+    <div class="topbar-logo">W<em>++</em></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-page">Scanner — Lexical Analyzer</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-pill" id="tokenCountPill">{{ tokens|length if tokens else 0 }} tokens</div>
+    <div class="theme-wrap">
+      <span class="theme-label" id="themeLabel">DARK</span>
+      <button type="button" class="theme-toggle" id="themeToggle"></button>
+    </div>
+  </div>
+</header>
+
+<form method="POST" id="scannerForm">
+<div class="ide-layout">
+
+  <div class="ide-pane">
+    <div class="pane-header">
+      <span class="pane-label">// <span class="ac">input</span> — source.wpp</span>
+    </div>
+    <div class="editor-wrap">
+      <div class="line-nums" id="lineNums"><span>1</span></div>
+      <textarea class="code-textarea" name="code" id="codeEditor"
+        spellcheck="false" autocomplete="off" autocorrect="off"
+        placeholder="// Write W++ code here&#10;&#10;int main(){&#10;&#10;    int a = 10;&#10;    int b = 20;&#10;&#10;    if(a &lt; b){&#10;        a = a + b;&#10;    }&#10;&#10;    return 0;&#10;}">{{ code }}</textarea>
+    </div>
+    <div class="statusbar">
+      <div class="status-info" id="editorInfo">Ln 1, Col 0 · 0 chars</div>
+      <button type="submit" class="run-btn">▶ Run Scanner</button>
+    </div>
+  </div>
+
+  <div class="ide-pane">
+    <div class="pane-header">
+      <span class="pane-label">// <span class="ac2">output</span> — tokens</span>
+    </div>
+
+    <div class="again-bar">
+      <div class="again-actions">
+        <button type="submit" formaction="/download_scanner_report" class="btn-again" form="scannerForm">⬇ Download Report</button>
+        <a href="/parser" class="btn-again">→ Try Parser</a>
+      </div>
+    </div>
+
+    <div class="output-pane-body">
+      {% if tokens %}
+      <table class="token-table">
+        <thead>
+          <tr><th>#</th><th>Type</th><th>Value</th><th>Line</th><th>Col</th></tr>
+        </thead>
+        <tbody>
+          {% for t in tokens %}
+          <tr class="{% if t[0] == 'ERROR' %}row-error{% endif %}">
+            <td class="row-num">{{ loop.index }}</td>
+            <td><span class="badge badge-{{ t[0] }}">{{ t[0] }}</span></td>
+            <td>{{ t[1] }}</td>
+            <td>{{ t[2] }}</td>
+            <td>{{ t[3] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">◎</div>
+        <h2>No Tokens Yet</h2>
+        <small>Write code and click "Run Scanner"</small>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">Tokens: <strong>{{ tokens|length if tokens else 0 }}</strong></div>
+      <div class="stat-item">Errors: <strong style="color:{% if error_count > 0 %}var(--red){% else %}var(--green){% endif %}">{{ error_count if error_count else 0 }}</strong></div>
+      <div class="stat-item">Status: <strong style="color:{% if tokens and error_count == 0 %}var(--green){% elif error_count > 0 %}var(--red){% else %}var(--txt3){% endif %}">{% if tokens and error_count == 0 %}DONE{% elif error_count > 0 %}ERRORS{% else %}IDLE{% endif %}</strong></div>
+    </div>
+  </div>
+
+</div>
+</form>
+
+<script src="{{ url_for('static', filename='scanner.js') }}"></script>
+<script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>
