@@ -18,7 +18,7 @@ class Lexer:
 
         # STRINGS & CHARS
         ('STRING_LITERAL', r'"([^"\\]|\\.)*"'),
-        ('CHAR_LITERAL', r"'([^'\\]|\\.)'"),
+        ('CHAR_LITERAL', r"'(\\.|[^'\\])'"),
 
         # KEYWORDS
         ('KEYWORD',
@@ -113,6 +113,8 @@ class Lexer:
                 'COMMENT_SINGLE',
                 'COMMENT_MULTI'
             ]:
+                # fix: multi-line comments mn newlines count karo
+                line_num += value.count('\n')
                 continue
 
             # =============================================
